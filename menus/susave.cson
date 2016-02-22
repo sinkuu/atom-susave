@@ -1,0 +1,18 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'susave'
+      'submenu': [
+        {
+          'label': 'Save (as super user)'
+          'command': 'susave:save'
+        },
+        {
+          'label': 'Save As (as super user)'
+          'command': 'susave:save-as'
+        }
+      ]
+    ]
+  }
+]

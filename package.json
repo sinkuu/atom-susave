@@ -1,0 +1,24 @@
+{
+  "name": "susave",
+  "main": "./lib/susave",
+  "version": "0.1.0",
+  "description": "(Linux only) save a file as super user",
+  "keywords": [
+    "file", "sudo"
+  ],
+  "activationCommands": {
+    "atom-workspace": [
+      "susave:save", "susave:save-as"
+    ]
+  },
+  "repository": "https://github.com/sinkuu/atom-susave",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "cross-spawn": "*",
+    "tmp": "*",
+    "shell-escape": "*"
+  }
+}
