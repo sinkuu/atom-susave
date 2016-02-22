@@ -52,7 +52,7 @@ module.exports = Susave =
       fs.writeSync tempfile.fd, text
       cmd = "cat " + shellescape([tempfile.name]) +
         " | tee " + shellescape([path])
-      spawnSync atom.config.get('susave.sudoGuiPath'),
+      spawnSync atom.config.get('susave.sudoGui'),
         [ "--", "sh", "-c", cmd ]
       tempfile.removeCallback
 

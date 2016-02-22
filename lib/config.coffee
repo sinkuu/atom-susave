@@ -1,5 +1,5 @@
 module.exports =
-  sudoGuiPath:
+  sudoGui:
     order: 1
     type: 'string'
     description: 'Graphical frondend for sudo'
