@@ -1,8 +1,8 @@
 {CompositeDisposable} = require 'atom'
 {spawnSync} = require 'child_process'
-fs          = require 'fs'
+fs = require 'fs'
 shellescape = require 'shell-escape'
-tmp         = require 'tmp'
+tmp = require 'tmp'
 
 module.exports = Susave =
   config: require './config'
@@ -51,14 +51,24 @@ module.exports = Susave =
       fs.writeSync tempfile.fd, text
       cmd = "cat " + shellescape([tempfile.name]) +
         " | tee " + shellescape([path])
-      spawnSync atom.config.get('susave.sudoGui'),
+      res = spawnSync atom.config.get('susave.sudoGui'),
         [ "--", "sh", "-c", cmd ]
       tempfile.removeCallback
 
-      buffer = editor.getBuffer()
-      buffer.cachedDiskContents = text
-      buffer.emitModifiedStatusChanged(false)
-      buffer.emitter.emit 'did-save', {path: path}
+      if res?.status != 0
+        atom.notifications.addError(
+          'Failed to save as supuer user',
+          detail: 'status=' + res.status)
+      else
+        if res.error?
+          atom.notifications.addError(
+            'Failed to save as supuer user',
+            detail: res.error)
+        else
+          buffer = editor.getBuffer()
+          buffer.cachedDiskContents = text
+          buffer.emitModifiedStatusChanged(false)
+          buffer.emitter.emit 'did-save', {path: path}
 
   tryDefaultSave: (editor) ->
     try
