@@ -2,4 +2,4 @@ Currently supports Linux only.
 
 # susave
 
-This package adds two commands, `susave:save` and `susave:save-as`, to save a file as super user.
+Package for saving a file as super user. If the editor failed to save files due to lack of permissions, you are requested to input password to save files as super user.
