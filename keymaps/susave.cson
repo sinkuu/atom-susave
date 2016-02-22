@@ -1,0 +1,3 @@
+'atom-text-editor':
+  'ctrl-s': 'susave:save'
+  'ctrl-shift-S': 'susave:save-as'

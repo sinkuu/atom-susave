@@ -11,4 +11,4 @@ module.exports =
     type: 'boolean'
     description:
       'suave:save/save-as will try executing core:save/save-as before sudo'
-    default: false
+    default: true
