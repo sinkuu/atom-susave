@@ -22,9 +22,8 @@ module.exports = Susave =
     if editor = atom.workspace.getActiveTextEditor()
       editor = atom.workspace.getActiveTextEditor()
 
-      return unless editor.isModified()
-
       if path = editor.getPath()
+        return unless editor.isModified()
         @save editor, path
       else
         @cmdSaveAs()
