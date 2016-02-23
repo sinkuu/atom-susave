@@ -1,9 +1,7 @@
-Currently supports Linux only.
-
 # susave
 
-Package for saving a file as super user. If the editor failed to save files due to lack of permissions, you are requested to input password to save files as super user.
+Package for saving a file as super user with Atom Editor. If the editor failed to save a file due to lack of permission, you are requested to input your password to save a file as super user.
 
 ## Requirements
 
-* Install `gksudo`.
+* For GNU/Linux system: Install `gksudo` if you don't have.

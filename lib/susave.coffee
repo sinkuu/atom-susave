@@ -8,6 +8,8 @@ module.exports = Susave =
   config: require './config'
   subscriptions: null
 
+  isMac: process.platform == 'darwin'
+
   activate: ->
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace',
@@ -51,8 +53,14 @@ module.exports = Susave =
       fs.writeSync tempfile.fd, text
       cmd = "cat " + shellescape([tempfile.name]) +
         " | tee " + shellescape([path])
-      res = spawnSync atom.config.get('susave.sudoGui'),
-        [ "--", "sh", "-c", cmd ]
+      if @isMac
+        # I don't know if this works.
+        res = spawnSync 'osascript',
+          [ '-e', 'do shell script "' + cmd +
+            '" with administrator privileges']
+      else
+        res = spawnSync atom.config.get('susave.sudoGui'),
+          [ '--', 'sh', '-c', cmd ]
       tempfile.removeCallback
 
       if res?.status != 0
