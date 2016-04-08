@@ -13,7 +13,7 @@ else
       type: 'string'
       description: 'Graphical frondend for sudo'
       default: 'gksudo'
-      enum: [ 'gksudo', 'kdesu' ]
+      enum: [ 'gksudo', 'kdesu', 'pkexec' ]
 
     tryDefaultSave:
       order: 2

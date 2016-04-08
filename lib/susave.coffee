@@ -59,8 +59,11 @@ module.exports = Susave =
           [ '-e', 'do shell script "' + cmd +
             '" with administrator privileges']
       else
+        sucmd = [ '--', 'sh', '-c', cmd ]
+        if atom.config.get('susave.sudoGui') == 'pkexec'
+          sucmd = [ 'sh', '-c', cmd ]
         res = spawnSync atom.config.get('susave.sudoGui'),
-          [ '--', 'sh', '-c', cmd ]
+          sucmd
       tempfile.removeCallback
 
       if res?.status != 0
