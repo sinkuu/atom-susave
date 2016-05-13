@@ -9,6 +9,7 @@ module.exports = Susave =
   subscriptions: null
 
   isMac: process.platform == 'darwin'
+  isWin: process.platform == 'win32' # platform is win32 on x64 Windows systems as well
 
   activate: ->
     @subscriptions = new CompositeDisposable
@@ -51,19 +52,26 @@ module.exports = Susave =
 
       tempfile = tmp.fileSync()
       fs.writeSync tempfile.fd, text
-      cmd = "cat " + shellescape([tempfile.name]) +
-        " | tee " + shellescape([path])
-      if @isMac
-        # I don't know if this works.
-        res = spawnSync 'osascript',
-          [ '-e', 'do shell script "' + cmd +
-            '" with administrator privileges']
+
+      if @isWin
+        command = "copy, /y, " + shellescape([tempfile.name]) + ", " + shellescape([path])
+        runasCommand = '$proc = start-process \"$env:windir\\system32\\cmd.exe\" /c,' + command + ' -verb RunAs -WindowStyle Hidden -WorkingDirectory $env:windir -Passthru; do {start-sleep -Milliseconds 100} until ($proc.HasExited)'
+        psCommand = ['-command', runasCommand ]
+        res = spawnSync 'powershell', psCommand
       else
-        sucmd = [ '--', 'sh', '-c', cmd ]
-        if atom.config.get('susave.sudoGui') == 'pkexec'
-          sucmd = [ 'sh', '-c', cmd ]
-        res = spawnSync atom.config.get('susave.sudoGui'),
-          sucmd
+        cmd = "cat " + shellescape([tempfile.name]) +
+          " | tee " + shellescape([path])
+        if @isMac
+          # I don't know if this works.
+          res = spawnSync 'osascript',
+            [ '-e', 'do shell script "' + cmd +
+              '" with administrator privileges']
+        else
+          sucmd = [ '--', 'sh', '-c', cmd ]
+          if atom.config.get('susave.sudoGui') == 'pkexec'
+            sucmd = [ 'sh', '-c', cmd ]
+          res = spawnSync atom.config.get('susave.sudoGui'),
+            sucmd
       tempfile.removeCallback
 
       if res?.status != 0
@@ -86,5 +94,5 @@ module.exports = Susave =
       editor.save()
       return true
     catch error
-      return false if error.code == 'EACCES' # permission denied
+      return false if error.code == 'EACCES' || error.code == 'EPERM' # permission denied 'EPERM' on Windows
       throw error
