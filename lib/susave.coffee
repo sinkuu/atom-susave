@@ -54,8 +54,12 @@ module.exports = Susave =
       fs.writeSync tempfile.fd, text
 
       if @isWin
-        command = "copy, /y, '\"#{tempfile.name}\"', '\"#{path}\"'"
-        runasCommand = '$proc = start-process \"$env:windir\\system32\\cmd.exe\" /c,' + command + ' -verb RunAs -WindowStyle Hidden -WorkingDirectory $env:windir -Passthru; do {start-sleep -Milliseconds 100} until ($proc.HasExited)'
+        escape = (s) -> s.replace(/'/g, '\'\'')
+        command = "copy, /y, '\"#{escape(tempfile.name)}\"', '\"#{escape(path)}\"'"
+        runasCommand = '$proc = start-process \"$env:windir\\system32\\cmd.exe\" /c,' +
+          command +
+          ' -verb RunAs -WindowStyle Hidden -WorkingDirectory $env:windir -Passthru;' +
+          ' do {start-sleep -Milliseconds 100} until ($proc.HasExited)'
         psCommand = ['-command', runasCommand ]
         res = spawnSync 'powershell', psCommand
       else
