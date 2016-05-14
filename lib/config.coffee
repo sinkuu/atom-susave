@@ -6,7 +6,7 @@ if process.platform == 'darwin'
       description:
         'susave:save/save-as will try executing core:save/save-as before sudo'
       default: true
-else
+else if process.platform != 'win32'
   module.exports =
     sudoGui:
       order: 1
