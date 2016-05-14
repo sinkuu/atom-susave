@@ -54,7 +54,7 @@ module.exports = Susave =
       fs.writeSync tempfile.fd, text
 
       if @isWin
-        command = "copy, /y, " + shellescape([tempfile.name]) + ", " + shellescape([path])
+        command = "copy, /y, '\"#{tempfile.name}\"', '\"#{path}\"'"
         runasCommand = '$proc = start-process \"$env:windir\\system32\\cmd.exe\" /c,' + command + ' -verb RunAs -WindowStyle Hidden -WorkingDirectory $env:windir -Passthru; do {start-sleep -Milliseconds 100} until ($proc.HasExited)'
         psCommand = ['-command', runasCommand ]
         res = spawnSync 'powershell', psCommand
@@ -74,14 +74,14 @@ module.exports = Susave =
             sucmd
       tempfile.removeCallback
 
-      if res?.status != 0
+      if res.status != 0
         atom.notifications.addError(
-          'Failed to save as supuer user',
+          'Failed to save as super user',
           detail: 'status=' + res.status)
       else
         if res.error?
           atom.notifications.addError(
-            'Failed to save as supuer user',
+            'Failed to save as super user',
             detail: res.error)
         else
           buffer = editor.getBuffer()
