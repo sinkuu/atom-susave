@@ -1,7 +1,7 @@
 {
   "name": "susave",
   "main": "./lib/susave",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Save a file as super user",
   "keywords": [
     "file",
