@@ -6,7 +6,7 @@ Package for saving a file as super user / admin with Atom Editor.
 * GNU/Linux distributions using one of the following sudo gui commands.
  * gksudo, kdesu, pkexec
 * Windows
- * tested on Windows 7 only
+ * tested on Windows 7 and Windows 10 only
 * Mac OS X
 
 ## Commands
