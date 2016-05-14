@@ -1,12 +1,12 @@
-if process.platform == 'darwin'
+if process.platform == 'darwin' || process.platform == 'win32'
   module.exports =
     tryDefaultSave:
       order: 1
       type: 'boolean'
       description:
-        'susave:save/save-as will try executing core:save/save-as before sudo'
+        'susave:save/save-as will try executing core:save/save-as first'
       default: true
-else if process.platform != 'win32'
+else
   module.exports =
     sudoGui:
       order: 1
@@ -19,5 +19,5 @@ else if process.platform != 'win32'
       order: 2
       type: 'boolean'
       description:
-        'susave:save/save-as will try executing core:save/save-as before sudo'
+        'susave:save/save-as will try executing core:save/save-as first'
       default: true
